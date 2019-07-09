@@ -68,7 +68,7 @@ public class SelectionRectangle implements Input.TextInputListener {
         height = mousePos.y - location.y;
     }
 
-    private void drawRectUsingPoints(ShapeRenderer sr, Viewport vp, Vector2 p1, Vector2 p2) {
+    private void drawRectUsingPoints(ShapeRenderer sr, Vector2 p1, Vector2 p2) {
         sr.rect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
     }
 
@@ -76,22 +76,22 @@ public class SelectionRectangle implements Input.TextInputListener {
         Vector2 p1 = getBottomLeft();
         Vector2 p2 = getTopLeft();
         p2.x += BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getBottomLeft();
         p2 = getBottomRight();
         p2.y += BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getTopLeft();
         p2 = getTopRight();
         p1.y -= BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getBottomRight();
         p2 = getTopRight();
         p1.x -= BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
     }
 
     public Vector2 getTopLeft() {
