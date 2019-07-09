@@ -2,6 +2,7 @@ package am.entity_placer;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -30,6 +31,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+        cameraInput();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -48,7 +50,31 @@ public class Main extends ApplicationAdapter {
 
     private void update() {
         canvas.update(viewport);
+    }
 
+    private void cameraInput() {
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            viewport.getCamera().translate(0, -5, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            viewport.getCamera().translate(0, 5, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            viewport.getCamera().translate(5, 0, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            viewport.getCamera().translate(-5, 0, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            OrthographicCamera cam = ((OrthographicCamera) viewport.getCamera());
+            if (cam.zoom > 0.05) {
+                cam.zoom -= 0.01f;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            ((OrthographicCamera) viewport.getCamera()).zoom += 0.01f;
+        }
+        viewport.getCamera().update();
     }
 
     @Override

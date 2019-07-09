@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SelectionRectangle {
-    public static final float BORDER_SIZE = 5;
+    public static final float BORDER_SIZE = 2;
     private float width, height;
     private Vector2 location;
     private boolean isSelected;
