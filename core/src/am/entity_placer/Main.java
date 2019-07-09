@@ -2,6 +2,8 @@ package am.entity_placer;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -13,6 +15,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class Main extends ApplicationAdapter {
+    private static final float CAM_SPEED = 150;
+    private static final float ZOOM_SPEED = 0.5f;
     private SpriteBatch batch;
     private Viewport viewport;
     private Canvas canvas;
@@ -30,6 +34,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
+        cameraInput();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -48,7 +53,32 @@ public class Main extends ApplicationAdapter {
 
     private void update() {
         canvas.update(viewport);
+    }
 
+    private void cameraInput() {
+        float dt = Gdx.graphics.getDeltaTime();
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            viewport.getCamera().translate(0, -CAM_SPEED * dt, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            viewport.getCamera().translate(0, CAM_SPEED * dt, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            viewport.getCamera().translate(CAM_SPEED * dt, 0, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            viewport.getCamera().translate(-CAM_SPEED * dt, 0, 0);
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            OrthographicCamera cam = ((OrthographicCamera) viewport.getCamera());
+            if (cam.zoom > 0.01) {
+                cam.zoom -= ZOOM_SPEED * dt;
+            }
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            ((OrthographicCamera) viewport.getCamera()).zoom += ZOOM_SPEED * dt;
+        }
+        viewport.getCamera().update();
     }
 
     @Override
