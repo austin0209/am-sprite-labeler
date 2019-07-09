@@ -8,18 +8,19 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class SelectionRectangle {
+public class SelectionRectangle implements Input.TextInputListener {
     public static final float BORDER_SIZE = 1;
     private float width, height;
+    public boolean isSelected;
     private Vector2 location;
-    private boolean isSelected;
-    private Vector2 initPos;
+    public String name;
 
     public SelectionRectangle(float x, float y, float width, float height) {
         location = new Vector2(x, y);
         this.width = width;
         this.height = height;
         this.isSelected = true;
+        this.name = "INSERT NAME HERE";
     }
 
     public void setLocation(float x, float y) {
@@ -117,10 +118,12 @@ public class SelectionRectangle {
         if (isSelected) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 fitToMouse(vp);
-            } else {
+            } else if (canvas.floatingRect) {
                 canvas.floatingRect = false;
-                isSelected = false;
                 normalize();
+                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
             }
         }
     }
@@ -134,4 +137,13 @@ public class SelectionRectangle {
         drawBounds(sr, vp);
     }
 
+    @Override
+    public void input(String text) {
+        name = text;
+    }
+
+    @Override
+    public void canceled() {
+
+    }
 }
