@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        Texture img = new Texture("core/assets/badlogic.jpg");
+        Texture img = new Texture("core/assets/sprites.png");
         canvas = new Canvas(img);
         viewport = new FitViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
         viewport.apply(true);
@@ -33,7 +33,7 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
-        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update();
