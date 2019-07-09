@@ -1,4 +1,4 @@
-package am.entity_placer;
+package am.sprite_placer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
