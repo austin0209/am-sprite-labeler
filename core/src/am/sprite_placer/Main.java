@@ -32,7 +32,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        cameraInput();
+        viewInput();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -58,7 +58,17 @@ public class Main extends ApplicationAdapter {
         canvas.update(viewport);
     }
 
-    private void cameraInput() {
+    private void viewInput() {
+        // fullscreen input
+        if (Gdx.input.isKeyPressed(Input.Keys.F11)) {
+            if (!Gdx.graphics.isFullscreen()) {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            } else {
+                Gdx.graphics.setWindowedMode(1280, 720);
+            }
+        }
+
+        // camera input
         float dt = Gdx.graphics.getDeltaTime();
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             viewport.getCamera().translate(0, -CAM_SPEED * dt, 0);
