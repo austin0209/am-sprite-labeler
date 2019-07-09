@@ -33,9 +33,7 @@ public class Canvas {
         selectedRect = rect;
     }
 
-    public void update(Viewport vp) {
-        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        vp.unproject(mousePos);
+    private void rectangleCreationLogic(Vector2 mousePos) {
         if (!floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
@@ -44,17 +42,25 @@ public class Canvas {
                 setSelectedRect(newRect);
             }
         }
+    }
+
+    private void updateRectangles(Vector2 mousePos, Viewport vp) {
         for (int i = rects.size() - 1; i >= 0; i--) {
             if (!floatingRect && rects.get(i).isPointInside(mousePos)
                     && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                 setSelectedRect(rects.get(i));
             }
-
             rects.get(i).update(this, vp);
+        }
+    }
 
-            if (rects.get(i).isPointInside(mousePos) && Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
-                rects.remove(i);
-            }
+    public void update(Viewport vp) {
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        vp.unproject(mousePos);
+        rectangleCreationLogic(mousePos);
+        updateRectangles(mousePos, vp);
+        if (selectedRect != null && Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            rects.remove(selectedRect);
         }
     }
 
