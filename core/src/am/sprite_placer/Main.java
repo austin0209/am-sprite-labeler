@@ -3,11 +3,10 @@ package am.sprite_placer;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -18,6 +17,7 @@ public class Main extends ApplicationAdapter {
     private Viewport viewport;
     private Canvas canvas;
     private ShapeRenderer shapeRenderer;
+    private Cursor customCursor;
 
     @Override
     public void create() {
@@ -25,8 +25,10 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         Texture img = new Texture("core/assets/sprites.png");
         canvas = new Canvas(img);
-        viewport = new FitViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
+        viewport = new FillViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
         viewport.apply(true);
+        customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/cursor.png")), 8, 8);
+        Gdx.graphics.setCursor(customCursor);
     }
 
     @Override
@@ -35,10 +37,15 @@ public class Main extends ApplicationAdapter {
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 0);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update();
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        canvas.drawGrid(shapeRenderer, viewport);
+        shapeRenderer.end();
+
         batch.begin();
         canvas.draw(batch, viewport);
         batch.end();
@@ -88,5 +95,6 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
         shapeRenderer.dispose();
         canvas.dispose();
+        customCursor.dispose();
     }
 }

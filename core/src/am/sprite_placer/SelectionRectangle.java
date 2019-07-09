@@ -115,7 +115,11 @@ public class SelectionRectangle {
     }
 
     public void draw(ShapeRenderer sr, Viewport vp) {
-        sr.setColor(Color.BLUE);
+        if (isSelected) {
+            sr.setColor(Color.RED);
+        } else {
+            sr.setColor(Color.BLUE);
+        }
         drawBounds(sr, vp);
     }
 
