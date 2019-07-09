@@ -1,12 +1,14 @@
-package am.entity_placer.desktop;
+package am.sprite_placer.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import am.entity_placer.Main;
+import am.sprite_placer.Main;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
+		config.width = 1280;
+		config.height = 720;
 		new LwjglApplication(new Main(), config);
 	}
 }
