@@ -1,3 +1,3 @@
-# am-entity-placer
-An application for easily placing entities in a tile based game.
+# am-sprite-labeler
+An application for labeling and loading in sprite sheets with ununiform sprite dimensions.
 LibGDX prototype 
