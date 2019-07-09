@@ -9,7 +9,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SelectionRectangle {
-    public static final float BORDER_SIZE = 2;
+    public static final float BORDER_SIZE = 1;
     private float width, height;
     private Vector2 location;
     private boolean isSelected;
@@ -37,10 +37,16 @@ public class SelectionRectangle {
     }
 
     private void normalize() {
-        location.x = width < 0 ? location.x + width : location.x;
-        location.y = height < 0 ? location.y + height : location.y;
-        width = Math.abs(width);
-        height = Math.abs(height);
+        // Need to round to snap to correct pixel size
+        Vector2 start = getBottomLeft();
+        Vector2 end = getTopRight();
+        start.x = (float) Math.floor(start.x);
+        start.y = (float) Math.floor(start.y);
+        end.x = (float) Math.ceil(end.x);
+        end.y = (float) Math.ceil(end.y);
+        location = start;
+        width = end.x - start.x;
+        height = end.y - start.y;
     }
 
     public void resize(float width, float height) {
@@ -115,7 +121,11 @@ public class SelectionRectangle {
     }
 
     public void draw(ShapeRenderer sr, Viewport vp) {
-        sr.setColor(Color.BLUE);
+        if (isSelected) {
+            sr.setColor(Color.RED);
+        } else {
+            sr.setColor(Color.BLUE);
+        }
         drawBounds(sr, vp);
     }
 
