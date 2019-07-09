@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -17,11 +18,20 @@ public class Canvas {
     private static final Color GRID_COLOR_1 = new Color(0x5F5F5FFF);
     private static final Color GRID_COLOR_2 = new Color(0xAFAFAFFF);
     private ArrayList<SelectionRectangle> rects;
+    private SelectionRectangle selectedRect;
     private Texture image;
 
     public Canvas(Texture img) {
         image = img;
         rects = new ArrayList<SelectionRectangle>();
+    }
+
+    private void setSelectedRect(SelectionRectangle rect) {
+        if (selectedRect != null) {
+            selectedRect.isSelected = false;
+        }
+        rect.isSelected = true;
+        selectedRect = rect;
     }
 
     public void update(Viewport vp) {
@@ -30,14 +40,21 @@ public class Canvas {
         if (!floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
-                rects.add(new SelectionRectangle(mousePos.x, mousePos.y, 0, 0));
+                SelectionRectangle newRect = new SelectionRectangle(mousePos.x, mousePos.y, 0, 0);
+                rects.add(newRect);
+                setSelectedRect(newRect);
             }
         }
         for (int i = rects.size() - 1; i >= 0; i--) {
+            if (!floatingRect && rects.get(i).isPointInside(mousePos)
+                    && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                setSelectedRect(rects.get(i));
+            }
+
+            rects.get(i).update(this, vp);
+
             if (rects.get(i).isPointInside(mousePos) && Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
                 rects.remove(i);
-            } else {
-                rects.get(i).update(this, vp);
             }
         }
     }
