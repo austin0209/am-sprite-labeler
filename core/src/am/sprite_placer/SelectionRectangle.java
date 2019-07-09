@@ -27,6 +27,11 @@ public class SelectionRectangle {
         location.y = y;
     }
 
+    public boolean isPointInside(Vector2 p) {
+        return p.x >= location.x && p.x <= location.x + width
+                && p.y >= location.y && p.y <= location.y + height;
+    }
+
     private Rectangle getNormalized() {
         float normX, normY, normW, normH;
         normX = width < 0 ? location.x + width : location.x;

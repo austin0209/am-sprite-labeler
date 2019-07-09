@@ -25,16 +25,20 @@ public class Canvas {
     }
 
     public void update(Viewport vp) {
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        vp.unproject(mousePos);
         if (!floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
-                Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-                vp.unproject(mousePos);
                 rects.add(new SelectionRectangle(mousePos.x, mousePos.y, 0, 0));
             }
         }
-        for (SelectionRectangle r : rects) {
-            r.update(this, vp);
+        for (int i = rects.size() - 1; i >= 0; i--) {
+            if (rects.get(i).isPointInside(mousePos) && Gdx.input.isButtonPressed(Input.Buttons.MIDDLE)) {
+                rects.remove(i);
+            } else {
+                rects.get(i).update(this, vp);
+            }
         }
     }
 
