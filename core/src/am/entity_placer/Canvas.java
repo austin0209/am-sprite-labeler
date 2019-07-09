@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 import java.util.ArrayList;
@@ -20,20 +21,21 @@ public class Canvas {
     }
 
     public void update(Viewport vp) {
-        System.out.println(rects.size());
         if (!floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
-                rects.add(new SelectionRectangle(Gdx.input.getX(), vp.getWorldHeight() - Gdx.input.getY(), 0, 0));
+                Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+                vp.unproject(mousePos);
+                rects.add(new SelectionRectangle(mousePos.x, mousePos.y, 0, 0));
             }
         }
         for (SelectionRectangle r : rects) {
-            r.update(this);
+            r.update(this, vp);
         }
     }
 
     public void draw(SpriteBatch sb, Viewport vp) {
-        sb.draw(image, 0, 0, vp.getScreenWidth(), vp.getScreenHeight());
+        sb.draw(image, 0, 0, vp.getWorldWidth(), vp.getWorldHeight());
     }
 
     public void drawShapes(ShapeRenderer sr, Viewport vp) {

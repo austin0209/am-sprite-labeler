@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -23,7 +24,7 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         Texture img = new Texture("core/assets/badlogic.jpg");
         canvas = new Canvas(img);
-        viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), new OrthographicCamera());
+        viewport = new FitViewport(1280, 720, new OrthographicCamera());
         viewport.apply(true);
     }
 
@@ -40,14 +41,14 @@ public class Main extends ApplicationAdapter {
         canvas.draw(batch, viewport);
         batch.end();
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         canvas.drawShapes(shapeRenderer, viewport);
         shapeRenderer.end();
     }
 
     private void update() {
         canvas.update(viewport);
+
     }
 
     @Override
