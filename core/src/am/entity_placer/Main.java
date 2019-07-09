@@ -24,7 +24,7 @@ public class Main extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
         Texture img = new Texture("core/assets/badlogic.jpg");
         canvas = new Canvas(img);
-        viewport = new FitViewport(1280, 720, new OrthographicCamera());
+        viewport = new FitViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
         viewport.apply(true);
     }
 
