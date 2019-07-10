@@ -109,12 +109,12 @@ public class Main extends ApplicationAdapter {
 
     private void writeToFile() {
         FileWriter listener = new FileWriter();
-        Gdx.input.getTextInput(listener, "Enter filename to write to:", "", "filename.txt");
+        Gdx.input.getTextInput(listener, "Enter filename to write to:", "", "filename.csv");
     }
 
     private void readFromFile() {
         FileReader reader = new FileReader();
-        Gdx.input.getTextInput(reader, "Enter file to read:", "", "filename.txt");
+        Gdx.input.getTextInput(reader, "Enter file to read:", "", "filename.csv");
     }
 
     @Override
@@ -136,14 +136,16 @@ public class Main extends ApplicationAdapter {
             try {
                 canvas.rects.clear();
                 Scanner sc = new Scanner(new File("Sprite Sheet Saves/" + text));
+                sc.nextLine();
                 while (sc.hasNextLine()) {
-                    float x = sc.nextInt();
-                    float y  = sc.nextInt();
-                    float width = sc.nextInt();
-                    float height = sc.nextInt();
-                    String name = sc.next();
+                    String line = sc.nextLine();
+                    String[] data = line.split(",");
+                    float x = Float.parseFloat(data[0]);
+                    float y  = Float.parseFloat(data[1]);
+                    float width = Float.parseFloat(data[2]);;
+                    float height = Float.parseFloat(data[3]);;
+                    String name = data[4];
                     canvas.rects.add(new SelectionRectangle(x, y, width, height, name));
-                    sc.nextLine();
                 }
                 sc.close();
                 System.out.println("Loaded from file!");
@@ -166,9 +168,10 @@ public class Main extends ApplicationAdapter {
                 File dir = new File("Sprite Sheet Saves");
                 dir.mkdir();
                 PrintWriter writer = new PrintWriter("Sprite Sheet Saves/" + text, "UTF-8");
+                writer.println("x,y,width,height,name");
                 for (SelectionRectangle r : canvas.rects) {
-                    writer.println("" + (int) r.getX() + " " + (int) r.getY() + " "
-                            + (int) r.width + " " + (int) r.height + " " + r.name);
+                    writer.println("" + (int) r.getX() + "," + (int) r.getY() + ","
+                            + (int) r.width + "," + (int) r.height + "," + r.name);
                 }
                 writer.close();
                 System.out.println("Written to file!");
