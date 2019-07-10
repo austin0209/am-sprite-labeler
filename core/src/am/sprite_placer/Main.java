@@ -109,7 +109,7 @@ public class Main extends ApplicationAdapter {
 
     private void writeToFile() {
         FileWriter listener = new FileWriter();
-        Gdx.input.getTextInput(listener, "Enter file to load:", "", "filename.txt");
+        Gdx.input.getTextInput(listener, "Enter filename to write to:", "", "filename.txt");
     }
 
     private void readFromFile() {
