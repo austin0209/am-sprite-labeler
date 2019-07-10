@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SelectionRectangle implements Input.TextInputListener {
     public static final float BORDER_SIZE = 1;
-    private float width, height;
+    public float width, height;
     public boolean isSelected;
     private Vector2 location;
     public String name;
@@ -19,13 +19,21 @@ public class SelectionRectangle implements Input.TextInputListener {
         location = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.isSelected = true;
+        this.isSelected = false;
         this.name = "INSERT NAME HERE";
     }
 
-    public void setLocation(float x, float y) {
-        location.x = x;
-        location.y = y;
+    public SelectionRectangle(float x, float y, float width, float height, String name) {
+        this(x, y, width, height);
+        this.name = name;
+    }
+
+    public float getX() {
+        return location.x;
+    }
+
+    public float getY() {
+        return location.y;
     }
 
     public boolean isPointInside(Vector2 p) {
@@ -139,7 +147,7 @@ public class SelectionRectangle implements Input.TextInputListener {
 
     @Override
     public void input(String text) {
-        name = text;
+        name = text.replaceAll("\\s+", "");
     }
 
     @Override

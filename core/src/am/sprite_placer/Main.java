@@ -9,6 +9,11 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
+
 public class Main extends ApplicationAdapter {
     private static final float CAM_SPEED = 150;
     private static final float ZOOM_SPEED = 0.5f;
@@ -32,7 +37,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        viewInput();
+        input();
         batch.setProjectionMatrix(viewport.getCamera().combined);
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -58,9 +63,17 @@ public class Main extends ApplicationAdapter {
         canvas.update(viewport);
     }
 
-    private void viewInput() {
+    private void input() {
+        // file input
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F1)) {
+            writeToFile();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
+            readFromFile();
+        }
+
         // fullscreen input
-        if (Gdx.input.isKeyPressed(Input.Keys.F11)) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             if (!Gdx.graphics.isFullscreen()) {
                 Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
             } else {
@@ -94,6 +107,16 @@ public class Main extends ApplicationAdapter {
         viewport.getCamera().update();
     }
 
+    private void writeToFile() {
+        FileWriter listener = new FileWriter();
+        Gdx.input.getTextInput(listener, "Enter file to load:", "", "filename.txt");
+    }
+
+    private void readFromFile() {
+        FileReader reader = new FileReader();
+        Gdx.input.getTextInput(reader, "Enter file to read:", "", "filename.txt");
+    }
+
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
@@ -105,5 +128,59 @@ public class Main extends ApplicationAdapter {
         shapeRenderer.dispose();
         canvas.dispose();
         customCursor.dispose();
+    }
+
+    private class FileReader implements Input.TextInputListener {
+        @Override
+        public void input(String text) {
+            try {
+                canvas.rects.clear();
+                Scanner sc = new Scanner(new File("Sprite Sheet Saves/" + text));
+                while (sc.hasNextLine()) {
+                    float x = sc.nextInt();
+                    float y  = sc.nextInt();
+                    float width = sc.nextInt();
+                    float height = sc.nextInt();
+                    String name = sc.next();
+                    canvas.rects.add(new SelectionRectangle(x, y, width, height, name));
+                    sc.nextLine();
+                }
+                sc.close();
+                System.out.println("Loaded from file!");
+            } catch (IOException e) {
+                System.out.println("Error reading file!");
+                System.out.println(e);
+            }
+        }
+
+        @Override
+        public void canceled() {
+
+        }
+    }
+
+    private class FileWriter implements Input.TextInputListener {
+        @Override
+        public void input(String text) {
+            try {
+                File dir = new File("Sprite Sheet Saves");
+                dir.mkdir();
+                PrintWriter writer = new PrintWriter("Sprite Sheet Saves/" + text, "UTF-8");
+                for (SelectionRectangle r : canvas.rects) {
+                    writer.println("" + (int) r.getX() + " " + (int) r.getY() + " "
+                            + (int) r.width + " " + (int) r.height + " " + r.name);
+                }
+                writer.close();
+                System.out.println("Written to file!");
+            } catch (IOException e) {
+                System.out.println("Error writing file!");
+                System.out.println(e);
+            }
+        }
+
+        @Override
+        public void canceled() {
+
+        }
     }
 }

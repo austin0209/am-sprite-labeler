@@ -13,10 +13,12 @@ import java.util.ArrayList;
 
 public class Canvas {
     public boolean floatingRect;
+    public ArrayList<SelectionRectangle> rects;
+
     private static final int GRID_SIZE = 16;
     private static final Color GRID_COLOR_1 = new Color(0x5F5F5FFF);
     private static final Color GRID_COLOR_2 = new Color(0xAFAFAFFF);
-    private ArrayList<SelectionRectangle> rects;
+
     private SelectionRectangle selectedRect;
     private Texture image;
 
