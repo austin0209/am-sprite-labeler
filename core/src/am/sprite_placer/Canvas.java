@@ -13,10 +13,13 @@ import java.util.ArrayList;
 
 public class Canvas {
     public boolean floatingRect;
+    public ArrayList<SelectionRectangle> rects;
+
     private static final int GRID_SIZE = 16;
     private static final Color GRID_COLOR_1 = new Color(0x5F5F5FFF);
     private static final Color GRID_COLOR_2 = new Color(0xAFAFAFFF);
-    private ArrayList<SelectionRectangle> rects;
+
+    private SelectionRectangle selectedRect;
     private Texture image;
 
     public Canvas(Texture img) {
@@ -24,17 +27,42 @@ public class Canvas {
         rects = new ArrayList<SelectionRectangle>();
     }
 
-    public void update(Viewport vp) {
+    private void setSelectedRect(SelectionRectangle rect) {
+        if (selectedRect != null) {
+            selectedRect.isSelected = false;
+        }
+        rect.isSelected = true;
+        selectedRect = rect;
+    }
+
+    private void rectangleCreationLogic(Vector2 mousePos) {
         if (!floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
-                Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-                vp.unproject(mousePos);
-                rects.add(new SelectionRectangle(mousePos.x, mousePos.y, 0, 0));
+                SelectionRectangle newRect = new SelectionRectangle(mousePos.x, mousePos.y, 0, 0);
+                rects.add(newRect);
+                setSelectedRect(newRect);
             }
         }
-        for (SelectionRectangle r : rects) {
-            r.update(this, vp);
+    }
+
+    private void updateRectangles(Vector2 mousePos, Viewport vp) {
+        for (int i = rects.size() - 1; i >= 0; i--) {
+            if (!floatingRect && rects.get(i).isPointInside(mousePos)
+                    && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                setSelectedRect(rects.get(i));
+            }
+            rects.get(i).update(this, vp);
+        }
+    }
+
+    public void update(Viewport vp) {
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        vp.unproject(mousePos);
+        rectangleCreationLogic(mousePos);
+        updateRectangles(mousePos, vp);
+        if (selectedRect != null && Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+            rects.remove(selectedRect);
         }
     }
 

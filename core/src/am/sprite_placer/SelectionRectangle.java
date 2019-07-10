@@ -8,23 +8,37 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
-public class SelectionRectangle {
+public class SelectionRectangle implements Input.TextInputListener {
     public static final float BORDER_SIZE = 1;
-    private float width, height;
+    public float width, height;
+    public boolean isSelected;
     private Vector2 location;
-    private boolean isSelected;
-    private Vector2 initPos;
+    public String name;
 
     public SelectionRectangle(float x, float y, float width, float height) {
         location = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.isSelected = true;
+        this.isSelected = false;
+        this.name = "INSERT NAME HERE";
     }
 
-    public void setLocation(float x, float y) {
-        location.x = x;
-        location.y = y;
+    public SelectionRectangle(float x, float y, float width, float height, String name) {
+        this(x, y, width, height);
+        this.name = name;
+    }
+
+    public float getX() {
+        return location.x;
+    }
+
+    public float getY() {
+        return location.y;
+    }
+
+    public boolean isPointInside(Vector2 p) {
+        return p.x >= location.x && p.x <= location.x + width
+                && p.y >= location.y && p.y <= location.y + height;
     }
 
     private Rectangle getNormalized() {
@@ -62,7 +76,7 @@ public class SelectionRectangle {
         height = mousePos.y - location.y;
     }
 
-    private void drawRectUsingPoints(ShapeRenderer sr, Viewport vp, Vector2 p1, Vector2 p2) {
+    private void drawRectUsingPoints(ShapeRenderer sr, Vector2 p1, Vector2 p2) {
         sr.rect(p1.x, p1.y, p2.x - p1.x, p2.y - p1.y);
     }
 
@@ -70,22 +84,22 @@ public class SelectionRectangle {
         Vector2 p1 = getBottomLeft();
         Vector2 p2 = getTopLeft();
         p2.x += BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getBottomLeft();
         p2 = getBottomRight();
         p2.y += BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getTopLeft();
         p2 = getTopRight();
         p1.y -= BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
 
         p1 = getBottomRight();
         p2 = getTopRight();
         p1.x -= BORDER_SIZE;
-        drawRectUsingPoints(sr, vp, p1, p2);
+        drawRectUsingPoints(sr, p1, p2);
     }
 
     public Vector2 getTopLeft() {
@@ -112,10 +126,12 @@ public class SelectionRectangle {
         if (isSelected) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 fitToMouse(vp);
-            } else {
+            } else if (canvas.floatingRect) {
                 canvas.floatingRect = false;
-                isSelected = false;
                 normalize();
+                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
+            } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
+                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
             }
         }
     }
@@ -129,4 +145,13 @@ public class SelectionRectangle {
         drawBounds(sr, vp);
     }
 
+    @Override
+    public void input(String text) {
+        name = text.replaceAll("\\s+", "");
+    }
+
+    @Override
+    public void canceled() {
+
+    }
 }
