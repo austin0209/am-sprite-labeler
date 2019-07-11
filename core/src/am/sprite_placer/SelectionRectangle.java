@@ -138,14 +138,14 @@ public class SelectionRectangle implements Input.TextInputListener {
 
     public void update(Canvas canvas, Viewport vp) {
         if (selected) {
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (!Utils.isGettingTextInput() && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 fitToMouse(vp);
             } else if (canvas.hasFloatingRect()) {
                 canvas.setFloating(false);
                 normalize();
-                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
+                Utils.getTextInput(this, "Enter Sprite Name:", "", name);
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
-                Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
+                Utils.getTextInput(this, "Enter Sprite Name:", "", name);
             }
         }
     }

@@ -54,7 +54,7 @@ public class Canvas {
     }
 
     private void rectangleCreationLogic(Vector2 mousePos) {
-        if (!floatingRect) {
+        if (!Utils.isGettingTextInput() && !floatingRect) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 floatingRect = true;
                 SelectionRectangle newRect = new SelectionRectangle(mousePos.x, mousePos.y, 0, 0);
