@@ -109,12 +109,12 @@ public class Main extends ApplicationAdapter {
 
     private void writeToFile() {
         FileWriter listener = new FileWriter();
-        Gdx.input.getTextInput(listener, "Enter filename to write to:", "", "filename.csv");
+        Utils.getTextInput(listener, "Enter filename to write to:", "", "filename.csv");
     }
 
     private void readFromFile() {
         FileReader reader = new FileReader();
-        Gdx.input.getTextInput(reader, "Enter file to read:", "", "filename.csv");
+        Utils.getTextInput(reader, "Enter file to read:", "", "filename.csv");
     }
 
     @Override
