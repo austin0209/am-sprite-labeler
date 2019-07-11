@@ -134,18 +134,19 @@ public class Main extends ApplicationAdapter {
         @Override
         public void input(String text) {
             try {
-                canvas.rects.clear();
                 Scanner sc = new Scanner(new File("Sprite Sheet Saves/" + text));
+                canvas.reset();
                 sc.nextLine();
                 while (sc.hasNextLine()) {
                     String line = sc.nextLine();
                     String[] data = line.split(",");
                     float x = Float.parseFloat(data[0]);
                     float y  = Float.parseFloat(data[1]);
-                    float width = Float.parseFloat(data[2]);;
-                    float height = Float.parseFloat(data[3]);;
+                    float width = Float.parseFloat(data[2]);
+                    float height = Float.parseFloat(data[3]);
+                    y -= height;
                     String name = data[4];
-                    canvas.rects.add(new SelectionRectangle(x, y, width, height, name));
+                    canvas.getRects().add(new SelectionRectangle(x, y, width, height, name));
                 }
                 sc.close();
                 System.out.println("Loaded from file!");
@@ -156,9 +157,7 @@ public class Main extends ApplicationAdapter {
         }
 
         @Override
-        public void canceled() {
-
-        }
+        public void canceled() { }
     }
 
     private class FileWriter implements Input.TextInputListener {
@@ -169,9 +168,9 @@ public class Main extends ApplicationAdapter {
                 dir.mkdir();
                 PrintWriter writer = new PrintWriter("Sprite Sheet Saves/" + text, "UTF-8");
                 writer.println("x,y,width,height,name");
-                for (SelectionRectangle r : canvas.rects) {
-                    writer.println("" + (int) r.getX() + "," + (int) r.getY() + ","
-                            + (int) r.width + "," + (int) r.height + "," + r.name);
+                for (SelectionRectangle r : canvas.getRects()) {
+                    writer.println("" + (int) r.getX() + "," + (int) (r.getY() + r.getHeight()) + ","
+                            + (int) r.getWidth() + "," + (int) r.getHeight() + "," + r.getName());
                 }
                 writer.close();
                 System.out.println("Written to file!");
@@ -182,8 +181,6 @@ public class Main extends ApplicationAdapter {
         }
 
         @Override
-        public void canceled() {
-
-        }
+        public void canceled() { }
     }
 }

@@ -9,23 +9,35 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
 public class SelectionRectangle implements Input.TextInputListener {
-    public static final float BORDER_SIZE = 1;
-    public float width, height;
-    public boolean isSelected;
+    private static final float BORDER_SIZE = 1;
+    private float width, height;
+    private boolean selected;
+    private String name;
     private Vector2 location;
-    public String name;
 
     public SelectionRectangle(float x, float y, float width, float height) {
         location = new Vector2(x, y);
         this.width = width;
         this.height = height;
-        this.isSelected = false;
+        this.selected = false;
         this.name = "INSERT NAME HERE";
     }
 
     public SelectionRectangle(float x, float y, float width, float height, String name) {
         this(x, y, width, height);
         this.name = name;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setSelected(boolean b) {
+        selected = b;
     }
 
     public float getX() {
@@ -35,6 +47,8 @@ public class SelectionRectangle implements Input.TextInputListener {
     public float getY() {
         return location.y;
     }
+
+    public String getName() { return name; }
 
     public boolean isPointInside(Vector2 p) {
         return p.x >= location.x && p.x <= location.x + width
@@ -123,11 +137,11 @@ public class SelectionRectangle implements Input.TextInputListener {
     }
 
     public void update(Canvas canvas, Viewport vp) {
-        if (isSelected) {
+        if (selected) {
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 fitToMouse(vp);
-            } else if (canvas.floatingRect) {
-                canvas.floatingRect = false;
+            } else if (canvas.hasFloatingRect()) {
+                canvas.setFloating(false);
                 normalize();
                 Gdx.input.getTextInput(this, "Enter Sprite Name:", "", name);
             } else if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) {
@@ -137,7 +151,7 @@ public class SelectionRectangle implements Input.TextInputListener {
     }
 
     public void draw(ShapeRenderer sr, Viewport vp) {
-        if (isSelected) {
+        if (selected) {
             sr.setColor(Color.RED);
         } else {
             sr.setColor(Color.BLUE);
@@ -147,7 +161,7 @@ public class SelectionRectangle implements Input.TextInputListener {
 
     @Override
     public void input(String text) {
-        name = text.replaceAll("\\s+", "");
+        name = text.replaceAll(",+", "");
     }
 
     @Override

@@ -12,8 +12,8 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.ArrayList;
 
 public class Canvas {
-    public boolean floatingRect;
-    public ArrayList<SelectionRectangle> rects;
+    private boolean floatingRect;
+    private ArrayList<SelectionRectangle> rects;
 
     private static final int GRID_SIZE = 16;
     private static final Color GRID_COLOR_1 = new Color(0x5F5F5FFF);
@@ -27,11 +27,29 @@ public class Canvas {
         rects = new ArrayList<SelectionRectangle>();
     }
 
+    public boolean hasFloatingRect() {
+        return floatingRect;
+    }
+
+    public void setFloating(boolean b) {
+        floatingRect = b;
+    }
+
+    public void reset() {
+        rects.clear();
+        floatingRect = false;
+        selectedRect = null;
+    }
+
+    public ArrayList<SelectionRectangle> getRects() {
+        return rects;
+    }
+
     private void setSelectedRect(SelectionRectangle rect) {
         if (selectedRect != null) {
-            selectedRect.isSelected = false;
+            selectedRect.setSelected(false);
         }
-        rect.isSelected = true;
+        rect.setSelected(true);
         selectedRect = rect;
     }
 
