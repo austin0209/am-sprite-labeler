@@ -29,14 +29,14 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        Texture img = new Texture("core/assets/sprites.png");
-        canvas = new Canvas(img);
-        viewport = new FillViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
+        canvas = new Canvas(new Texture("core/assets/default.png"));
+        viewport = new FillViewport(canvas.getWidth(), canvas.getHeight(), new OrthographicCamera());
         viewport.apply(true);
         neutralCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/cursor.png")), 8, 8);
         verticalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/vertical_resize.png")), 8, 8);
         horizontalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/horizontal_resize.png")), 8, 8);
         Gdx.graphics.setCursor(neutralCursor);
+        Utils.openFileBrowser();
     }
 
     @Override
@@ -74,6 +74,11 @@ public class Main extends ApplicationAdapter {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.F2)) {
             readFromFile();
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.F3)) {
+            canvas.resetSetImage();
+            Utils.resetSpritePath();
+            Utils.openFileBrowser();
         }
 
         // fullscreen input
@@ -147,7 +152,7 @@ public class Main extends ApplicationAdapter {
                     String line = sc.nextLine();
                     String[] data = line.split(",");
                     float x = Float.parseFloat(data[0]);
-                    float y  = Float.parseFloat(data[1]);
+                    float y = Float.parseFloat(data[1]);
                     float width = Float.parseFloat(data[2]);
                     float height = Float.parseFloat(data[3]);
                     y -= height;
@@ -163,7 +168,8 @@ public class Main extends ApplicationAdapter {
         }
 
         @Override
-        public void canceled() { }
+        public void canceled() {
+        }
     }
 
     private class FileWriter implements Input.TextInputListener {
@@ -187,6 +193,7 @@ public class Main extends ApplicationAdapter {
         }
 
         @Override
-        public void canceled() { }
+        public void canceled() {
+        }
     }
 }
