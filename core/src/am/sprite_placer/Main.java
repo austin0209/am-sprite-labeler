@@ -17,11 +17,13 @@ import java.util.Scanner;
 public class Main extends ApplicationAdapter {
     private static final float CAM_SPEED = 150;
     private static final float ZOOM_SPEED = 0.5f;
+
+    public static Cursor neutralCursor, verticalResizeCursor, horizontalResizeCursor;
+
     private SpriteBatch batch;
     private Viewport viewport;
     private Canvas canvas;
     private ShapeRenderer shapeRenderer;
-    private Cursor customCursor;
 
     @Override
     public void create() {
@@ -31,8 +33,10 @@ public class Main extends ApplicationAdapter {
         canvas = new Canvas(img);
         viewport = new FillViewport(img.getWidth(), img.getHeight(), new OrthographicCamera());
         viewport.apply(true);
-        customCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/cursor.png")), 8, 8);
-        Gdx.graphics.setCursor(customCursor);
+        neutralCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/cursor.png")), 8, 8);
+        verticalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/vertical_resize.png")), 8, 8);
+        horizontalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/horizontal_resize.png")), 8, 8);
+        Gdx.graphics.setCursor(neutralCursor);
     }
 
     @Override
@@ -127,7 +131,9 @@ public class Main extends ApplicationAdapter {
         batch.dispose();
         shapeRenderer.dispose();
         canvas.dispose();
-        customCursor.dispose();
+        neutralCursor.dispose();
+        verticalResizeCursor.dispose();
+        horizontalResizeCursor.dispose();
     }
 
     private class FileReader implements Input.TextInputListener {

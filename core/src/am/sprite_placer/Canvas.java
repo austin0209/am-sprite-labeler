@@ -46,6 +46,9 @@ public class Canvas {
     }
 
     private void setSelectedRect(SelectionRectangle rect) {
+        if (selectedRect != null && selectedRect.isResizing()) {
+            return;
+        }
         if (selectedRect != null) {
             selectedRect.setSelected(false);
         }
@@ -53,9 +56,18 @@ public class Canvas {
         selectedRect = rect;
     }
 
+    private boolean isAnyRectResizing() {
+        for (SelectionRectangle sr : rects) {
+            if (sr.isResizing()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void rectangleCreationLogic(Vector2 mousePos) {
-        if (!Utils.isGettingTextInput() && !floatingRect) {
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+        if (!Utils.isGettingTextInput() && !floatingRect && !isAnyRectResizing()) {
+            if (Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
                 floatingRect = true;
                 SelectionRectangle newRect = new SelectionRectangle(mousePos.x, mousePos.y, 0, 0);
                 rects.add(newRect);
@@ -65,21 +77,22 @@ public class Canvas {
     }
 
     private void updateRectangles(Vector2 mousePos, Viewport vp) {
+        Gdx.graphics.setCursor(Main.neutralCursor);
         for (int i = rects.size() - 1; i >= 0; i--) {
             if (!floatingRect && rects.get(i).isPointInside(mousePos)
-                    && Gdx.input.isButtonPressed(Input.Buttons.RIGHT)) {
+                    && Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
                 setSelectedRect(rects.get(i));
             }
             rects.get(i).update(this, vp);
+            if (!rects.get(i).isValid()) rects.remove(rects.get(i));
         }
     }
 
     public void update(Viewport vp) {
-        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
-        vp.unproject(mousePos);
+        Vector2 mousePos = Utils.getMousePos(vp);
         rectangleCreationLogic(mousePos);
         updateRectangles(mousePos, vp);
-        if (selectedRect != null && Gdx.input.isKeyPressed(Input.Keys.BACKSPACE)) {
+        if (selectedRect != null && (Gdx.input.isKeyPressed(Input.Keys.BACKSPACE) || Gdx.input.isKeyPressed(Input.Keys.DEL))) {
             rects.remove(selectedRect);
         }
     }
