@@ -18,6 +18,7 @@ import java.awt.event.WindowFocusListener;
 public class Utils {
 
     private static boolean gettingTextInput;
+    private static String spriteSheetPath;
 
     private Utils() { }
 
@@ -37,8 +38,6 @@ public class Utils {
                         public boolean isOptimizedDrawingEnabled() {
                             return false;
                         }
-
-                        ;
                     };
 
                     textPanel.setLayout(new OverlayLayout(textPanel));
@@ -120,6 +119,32 @@ public class Utils {
         }
     }
 
+    public static void openFileBrowser() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                final JFileChooser fc = new JFileChooser() {
+                    // "hacky" solution to keep file chooser on top
+                    @Override
+                    protected JDialog createDialog(Component parent) {
+                        JDialog dialog = super.createDialog(parent);
+                        dialog.setAlwaysOnTop(true);
+                        return dialog;
+                    }
+                };
+                int returnVal = fc.showOpenDialog(null);
+                if (returnVal == 0) {
+                    spriteSheetPath = fc.getSelectedFile().getAbsolutePath();
+                }
+            }
+        });
+    }
+
+    public static String getSpritePath() {
+        return spriteSheetPath;
+    }
+
+    public static void resetSpritePath() { spriteSheetPath = null; }
+  
     public static Vector2 getMousePos(Viewport vp) {
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         vp.unproject(mousePos);
