@@ -2,6 +2,7 @@ package am.sprite_placer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,9 +22,13 @@ public class Canvas {
 
     private SelectionRectangle selectedRect;
     private Texture image;
+    private float width, height;
+    private boolean setImage;
 
     public Canvas(Texture img) {
         image = img;
+        width = img.getWidth();
+        height = img.getHeight();
         rects = new ArrayList<SelectionRectangle>();
     }
 
@@ -43,6 +48,26 @@ public class Canvas {
 
     public ArrayList<SelectionRectangle> getRects() {
         return rects;
+    }
+
+    public float getWidth() {
+        return width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setImage(String path, Viewport vp) {
+        image = new Texture(new FileHandle(path));
+        width = image.getWidth();
+        height = image.getHeight();
+        vp.setWorldSize(width, height);
+        setImage = true;
+    }
+
+    public void resetSetImage() {
+        setImage = false;
     }
 
     private void setSelectedRect(SelectionRectangle rect) {
@@ -75,6 +100,12 @@ public class Canvas {
     }
 
     public void update(Viewport vp) {
+        if (!setImage) {
+            if (Utils.getSpritePath() != null) {
+                setImage(Utils.getSpritePath(), vp);
+            }
+            return;
+        }
         Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
         vp.unproject(mousePos);
         rectangleCreationLogic(mousePos);
