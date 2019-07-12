@@ -1,6 +1,10 @@
 package am.sprite_placer;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.math.Rectangle;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -140,4 +144,15 @@ public class Utils {
     }
 
     public static void resetSpritePath() { spriteSheetPath = null; }
+  
+    public static Vector2 getMousePos(Viewport vp) {
+        Vector2 mousePos = new Vector2(Gdx.input.getX(), Gdx.input.getY());
+        vp.unproject(mousePos);
+        return mousePos;
+    }
+
+    public static boolean isPointInsideRectangle(Vector2 p, com.badlogic.gdx.math.Rectangle r) {
+        return p.x >= r.x && p.x <= r.x + r.width
+                && p.y >= r.y && p.y <= r.y + r.height;
+    }
 }
