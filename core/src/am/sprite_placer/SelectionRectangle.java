@@ -3,6 +3,7 @@ package am.sprite_placer;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 public class SelectionRectangle implements Input.TextInputListener {
     private static final float BORDER_SIZE = 1;
     private ArrayList<Rectangle> resizeRects;
+    private Label label;
     private float width, height;
     private boolean selected;
     private int resizeID;
@@ -26,6 +28,7 @@ public class SelectionRectangle implements Input.TextInputListener {
         this.height = height;
         this.selected = false;
         this.name = "INSERT NAME HERE";
+        label = new Label(x + BORDER_SIZE, y - BORDER_SIZE, "");
         resizeRects = new ArrayList<Rectangle>();
         resizeID = -1;
         valid = true;
@@ -288,7 +291,7 @@ public class SelectionRectangle implements Input.TextInputListener {
         }
     }
 
-    public void draw(ShapeRenderer sr, Viewport vp) {
+    public void draw(SpriteBatch sb, ShapeRenderer sr, Viewport vp) {
         if (selected) {
             sr.setColor(Color.RED);
             drawBounds(sr, vp);
@@ -297,11 +300,20 @@ public class SelectionRectangle implements Input.TextInputListener {
             sr.setColor(Color.BLUE);
             drawBounds(sr, vp);
         }
+
+        sb.begin();
+        label.draw(sb);
+        sb.end();
+    }
+
+    public void dispose() {
+        label.dispose();
     }
 
     @Override
     public void input(String text) {
         name = text.replaceAll(",+", "");
+        label.setText(text);
     }
 
     @Override
