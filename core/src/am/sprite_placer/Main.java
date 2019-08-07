@@ -70,6 +70,11 @@ public class Main extends ApplicationAdapter {
             Utils.openFileBrowser();
         }
 
+        // show labels
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+            Canvas.showLabels = !Canvas.showLabels;
+        }
+
         // fullscreen input
         if (Gdx.input.isKeyJustPressed(Input.Keys.F11)) {
             if (!Gdx.graphics.isFullscreen()) {
