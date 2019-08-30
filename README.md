@@ -8,7 +8,7 @@ arrow keys - move camera
 
 f1 - write to file (csv)
 
-f2 - read from file (should be a csv in a directory called "Sprite Sheet Saves" which should in the the active directory)
+f2 - read from file (should be a csv in a directory called "Sprite Sheet Saves" which should be in the the active directory)
 
 f3 - open sprite sheet
 
