@@ -49,18 +49,7 @@ public class Main extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         update();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        canvas.drawGrid(shapeRenderer, viewport);
-        shapeRenderer.end();
-
-        batch.begin();
-        canvas.draw(batch, viewport);
-        batch.end();
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        canvas.drawShapes(shapeRenderer, viewport);
-        shapeRenderer.end();
+        canvas.draw(batch, shapeRenderer, viewport);
     }
 
     private void update() {
@@ -79,6 +68,11 @@ public class Main extends ApplicationAdapter {
             canvas.resetSetImage();
             Utils.resetSpritePath();
             Utils.openFileBrowser();
+        }
+
+        // show labels
+        if (Gdx.input.isKeyJustPressed(Input.Keys.L)) {
+            Canvas.showLabels = !Canvas.showLabels;
         }
 
         // fullscreen input
