@@ -21,6 +21,7 @@ public class SelectionRectangle implements Input.TextInputListener {
     private String name;
     private Vector2 location;
     private boolean valid;
+    private boolean hasNamed;
 
     public SelectionRectangle(float x, float y, float width, float height) {
         location = new Vector2(x, y);
@@ -32,6 +33,7 @@ public class SelectionRectangle implements Input.TextInputListener {
         resizeRects = new ArrayList<Rectangle>();
         resizeID = -1;
         valid = true;
+        hasNamed = false;
     }
 
     public SelectionRectangle(float x, float y, float width, float height, String name) {
@@ -48,7 +50,7 @@ public class SelectionRectangle implements Input.TextInputListener {
         float horizontalRectSize = Math.max(BORDER_SIZE, borderSizeRatio * height);
         horizontalRectSize = Math.min(horizontalRectSize, minRectSize);
         float verticalRectSize = Math.max(BORDER_SIZE, borderSizeRatio * width);
-        verticalRectSize= Math.min(verticalRectSize, minRectSize);
+        verticalRectSize = Math.min(verticalRectSize, minRectSize);
         // LEFT
         resizeRects.add(new Rectangle(location.x, location.y + height * cornerSizeRatio,
                 verticalRectSize, height * sizeRatio));
@@ -318,6 +320,8 @@ public class SelectionRectangle implements Input.TextInputListener {
 
     @Override
     public void canceled() {
-        valid = false;
+        if (!hasNamed) {
+            valid = false;
+        }
     }
 }
