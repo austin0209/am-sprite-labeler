@@ -1,5 +1,5 @@
 # am-sprite-labeler
-An application for labeling and loading in sprite sheets with ununiform sprite dimensions.
+A game development utility for labeling and loading in sprite sheets with ununiform sprite dimensions.
 This application spits out a CSV that your program can read to load in sprites.
 
 To use it, select each sprite with a rectangle and give it a name. The csv will have info pertaining to the sprite's name, location, and dimensions.
