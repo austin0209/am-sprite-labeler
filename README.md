@@ -1,9 +1,18 @@
 # am-sprite-labeler
-A game development utility for labeling and loading in sprite sheets with ununiform sprite dimensions.
+A game development utility using the LibGDX framework for labeling and loading in sprite sheets with ununiform sprite dimensions.
 This application spits out a CSV that your program can read to load in sprites.
 
-To use it, select each sprite with a rectangle and give it a name. The csv will have info pertaining to the sprite's name, location, and dimensions.
-# Controls:
+To use it, select each sprite with a rectangle and give it a name. Use the function keys to save/read files.
+
+## Output:
+Each entry of the CSV will be formatted as follows:
+>`x,y,width,height,name`
+
+The x and y are positions of the srite relative to the top left. The width and height are specified by each selection rectangle. The name is the name given to the sprite by the user.
+
+This output can be parsed by your code to determine where each sprite is in a sprite sheet.
+
+## Controls:
 ws - zoom in/out
 
 arrow keys - move camera
