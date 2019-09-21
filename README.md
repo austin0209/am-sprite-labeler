@@ -2,7 +2,9 @@
 A game development utility written with the LibGDX framework for labeling and loading in sprite sheets with ununiform sprite dimensions.
 This application spits out a CSV that your program can read to load in sprites.
 
-To use it, select each sprite with a rectangle and give it a name. Use the function keys to save/read files.
+## Usage
+You can download a runnable jar from the repo, or you can click [here](https://github.com/austin0209/am-sprite-labeler/raw/master/AM%20Sprite%20Labeler.jar). Note that this program has only been tested to work with Java versions 1.8-1.12.
+Select each sprite with a rectangle and give it a name. Use the function keys to save/read files.
 
 ## Output:
 Each entry of the CSV will be formatted as follows:
