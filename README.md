@@ -8,7 +8,7 @@ To use it, select each sprite with a rectangle and give it a name. Use the funct
 Each entry of the CSV will be formatted as follows:
 >`x,y,width,height,name`
 
-The x and y are positions of the srite relative to the top left. The width and height are specified by each selection rectangle. The name is the name given to the sprite by the user.
+The x and y are positions of the sprite relative to the top left. The width and height are specified by each selection rectangle. The name is the name given to the sprite by the user.
 
 This output can be parsed by your code to determine where each sprite is in a sprite sheet.
 
