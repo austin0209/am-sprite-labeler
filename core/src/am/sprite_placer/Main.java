@@ -29,12 +29,12 @@ public class Main extends ApplicationAdapter {
     public void create() {
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
-        canvas = new Canvas(new Texture("core/assets/default.png"));
+        canvas = new Canvas(new Texture("default.png"));
         viewport = new FillViewport(canvas.getWidth(), canvas.getHeight(), new OrthographicCamera());
         viewport.apply(true);
-        neutralCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/cursor.png")), 8, 8);
-        verticalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/vertical_resize.png")), 8, 8);
-        horizontalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/horizontal_resize.png")), 8, 8);
+        neutralCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("cursor.png")), 8, 8);
+        verticalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("vertical_resize.png")), 8, 8);
+        horizontalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("horizontal_resize.png")), 8, 8);
         Gdx.graphics.setCursor(neutralCursor);
         //Utils.openFileBrowser();
     }
