@@ -36,7 +36,7 @@ public class Main extends ApplicationAdapter {
         verticalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/vertical_resize.png")), 8, 8);
         horizontalResizeCursor = Gdx.graphics.newCursor(new Pixmap(Gdx.files.internal("core/assets/horizontal_resize.png")), 8, 8);
         Gdx.graphics.setCursor(neutralCursor);
-        Utils.openFileBrowser();
+        //Utils.openFileBrowser();
     }
 
     @Override
