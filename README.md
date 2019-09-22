@@ -7,7 +7,7 @@ You can download a runnable jar from the repo, or you can click [here](https://g
 Select each sprite with a rectangle and give it a name. Use the function keys to save/read files.
 
 ## Output:
-Note that the program creates a folder in the active directory (the directory you run the JAR in) named "Sprite Sheet Saves." All output files are written to this folder, and all CSV's you want to read must be in this folder.
+Note that the program creates a folder in the active directory (the directory you run the JAR in) named "Sprite Sheet Saves." All output files are written to this folder, and all CSV's you want the program to read must be in this folder.
 
 Each entry of the CSV will be formatted as follows:
 >`x,y,width,height,name`
